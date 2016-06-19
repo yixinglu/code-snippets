@@ -43,7 +43,8 @@ struct run_check { };
 
 template <typename C>
 struct run_check<C,
-		 typename std::enable_if<std::is_integral<C>::value>::type>
+                 typename std::enable_if<std::is_integral<C>::value>::type
+                 >
 {
   using type = C;
 };
@@ -52,6 +53,21 @@ template <typename C>
 typename run_check<C>::type test_run_check(C c) {
   cout << c << endl;
   return c;
+}
+
+template <typename C>
+struct run_check<C, float> {
+  using type = float;
+};
+
+template <typename C>
+struct run_check<C, void> {
+  using type = void;
+};
+
+template <typename C>
+typename run_check<C>::type test_run_check2(C c) {
+  cout << "test_run_check2: " << c << endl;
 }
 // -----------------
 int main() {
@@ -65,8 +81,10 @@ int main() {
   // Test<false, int>::type i;
   test(5);
 
-  test_run_check(5);
+  // test_run_check(5);
   // test_run_check(5.0);
+  // test_run_check2(5);
+  test_run_check2(5.0); 
 
   return 0;
 }

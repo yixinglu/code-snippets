@@ -33,6 +33,18 @@ struct base_t {
 template <typename U, typename... Ts>
 struct test_parameter_park;
 
+template <template <class...> class Fn>
+struct meta_quote {
+  template <typename... Ts>
+  using apply = Fn<Ts...>;
+};
+
+template <typename T>
+struct meta_always {
+  template <typename... Ts>
+  using apply = T;
+};
+
 int main() {
   cout << "all_t<true, true>:" << all_t<true, true>::value << endl;
   cout << "all_t<false, true>:" << all_t<false, true>::value << endl;
@@ -40,5 +52,10 @@ int main() {
   cout << "test<false, true>():" << test<false, true>().value << endl;
 
   base_t base(true, 10);
+
+  cout << "meta_quote<meta_always> type:" 
+       << std::is_same<meta_quote<meta_always>::apply<int>::apply<double, float>, int>::value << endl;
+  // meta_quote<meta_always>::apply<int, double>::apply<double, float> t; // error
+
   return 0;
 }

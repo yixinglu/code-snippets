@@ -17,7 +17,7 @@ void print(const char*) {
 }
 
 int main(int argc, char* argv[]) {
-  char* p = "hello";
+  const char* p = "hello";
   const char* pc = p;
   const char pa[] = "hello";
   print(p);

@@ -45,6 +45,17 @@ struct meta_always {
   using apply = T;
 };
 
+template <typename...>
+struct typelist;
+
+template <typename T>
+struct transform;
+
+template <typename... Ts>
+struct transform<typelist<Ts...>> {
+  static constexpr bool value = true;
+};
+
 int main() {
   cout << "all_t<true, true>:" << all_t<true, true>::value << endl;
   cout << "all_t<false, true>:" << all_t<false, true>::value << endl;
@@ -56,6 +67,9 @@ int main() {
   cout << "meta_quote<meta_always> type:" 
        << std::is_same<meta_quote<meta_always>::apply<int>::apply<double, float>, int>::value << endl;
   // meta_quote<meta_always>::apply<int, double>::apply<double, float> t; // error
+
+  cout << "transform value:" << transform<typelist<int, double>>::value << endl;
+  // cout << "transform value:" << transform<int, double>::value << endl; // error
 
   return 0;
 }

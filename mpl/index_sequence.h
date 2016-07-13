@@ -5,7 +5,7 @@ namespace mpl {
 template <std::size_t... Ints>
 struct index_sequence {};
 
-template <typename T, std::size_t Ints>
+template <typename T, std::size_t N>
 struct make_sequence_impl;
 
 template <std::size_t N, std::size_t... Ints>

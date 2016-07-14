@@ -1,5 +1,8 @@
 #include "index_sequence.h"
 #include "get_first_if.h"
+#include "tuple.h"
+
+#include <cassert>
 
 using namespace mpl;
 
@@ -24,6 +27,10 @@ int main() {
 
   using default_t = get_first_if<is_inconsistent, consistent>;
   static_assert(std::is_same<consistent, default_t>::value, "");
+
+  mpl::tuple<double, int> t{0.1, 2};
+  static_assert(std::is_same<int, mpl::element_type_holder_t<1, double, int>>::value, "");
+  assert(mpl::get<1>(t) == 2);
 
   return 0;
 }

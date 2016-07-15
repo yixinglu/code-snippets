@@ -86,5 +86,7 @@ int main() {
   // test_run_check2(5);
   test_run_check2(5.0); 
 
+  static_assert(std::is_same<std::enable_if<true>::type, void>::value, "");
+
   return 0;
 }

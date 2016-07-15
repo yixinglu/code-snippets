@@ -26,14 +26,17 @@ struct element_type_holder<k, tuple<T, Ts...>> {
 template <std::size_t k, class... Ts>
 using element_type_holder_t = typename element_type_holder<k, tuple<Ts...>>::type;
 
+template <bool predicate, std::size_t k, class...Ts>
+using ret_type_t = typename std::enable_if<predicate, element_type_holder_t<k, Ts...>&>::type;
+
 template <std::size_t k, class T, class... Ts>
-typename std::enable_if<k == 0, element_type_holder_t<0, T, Ts...>&>::type
+ret_type_t<k==0, 0, T, Ts...>
 get(tuple<T, Ts...> &t) {
   return t.tail;
 }
 
 template <std::size_t k, class T, class... Ts>
-typename std::enable_if<k!=0, element_type_holder_t<k, T, Ts...>&>::type
+ret_type_t<k!=0, k, T, Ts...>
 get(tuple<T, Ts...> &t) {
   tuple<Ts...> &base = t;
   return get<k-1>(base);

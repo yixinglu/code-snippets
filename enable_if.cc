@@ -10,10 +10,10 @@ is_odd(T i) {
 }
 
 template <typename T,
-	  typename = typename std::enable_if<std::is_integral<T>::value>::type
-	>
+          typename = typename std::enable_if<std::is_integral<T>::value>::type
+         >
 bool is_even(T i) {
-	return !is_odd(i);
+  return !is_odd(i);
 }
 
 // -----------------
@@ -69,7 +69,33 @@ template <typename C>
 typename run_check<C>::type test_run_check2(C c) {
   cout << "test_run_check2: " << c << endl;
 }
+
 // -----------------
+template <typename T, typename Enable=void>
+struct test_partial {
+  static constexpr bool value = false;
+};
+
+template <typename T>
+struct test_partial<T, typename std::enable_if<T::value>::type> {
+  static constexpr bool value = T::value;
+};
+
+struct test_true {
+  static constexpr bool value = true;
+};
+
+struct test_false {
+  static constexpr bool value = false;
+};
+
+void test_partial_fn() {
+  static_assert(test_partial<test_true>::value == true, "");
+  static_assert(test_partial<test_false>::value == false, "");
+}
+
+// -----------------
+
 int main() {
 
   cout << "5 is odd:" << is_odd(5) << endl;
@@ -84,7 +110,9 @@ int main() {
   // test_run_check(5);
   // test_run_check(5.0);
   // test_run_check2(5);
-  test_run_check2(5.0); 
+  test_run_check2(5.0);
+
+  test_partial_fn();
 
   static_assert(std::is_same<std::enable_if<true>::type, void>::value, "");
 

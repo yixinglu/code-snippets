@@ -1,8 +1,9 @@
 
 #include <iostream>
+#include <string.h>
 #include "socket.h"
 
-using namespace sock_test;
+using sock_test::Socket;
 
 int main() {
   Socket client("localhost", 54321);
@@ -10,7 +11,7 @@ int main() {
   char buf[buflen] = {0};
   snprintf(buf, buflen, "hello socket!\n");
   int ret = client.write(buf, strlen(buf));
-  if (ret < 0) error("ERROR writing.");
+  if (ret < 0) sock_test::error("ERROR writing.");
   ret = client.read(buf, buflen);
   std::cout << buf << std::endl;
 

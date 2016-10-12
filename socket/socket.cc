@@ -19,7 +19,7 @@ void error(const char *msg) {
 
 Socket::Socket(const char *host, unsigned int port) {
   sockfd_ = socket(AF_INET, SOCK_STREAM, 0);
-  if (sockfd_ < 0) { error("ERROR opening socket."); }
+  CHECK(sockfd_, "ERROR opening socket.");
 
   hostent *server = gethostbyname(host);
   if (server == NULL) { error("ERROR no such host."); }
@@ -29,9 +29,7 @@ Socket::Socket(const char *host, unsigned int port) {
   bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
   serv_addr.sin_port = htons(port);
 
-  if (connect(sockfd_, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-    error("ERROR connecting.");
-  }
+  CHECK(connect(sockfd_, (sockaddr *)&serv_addr, sizeof(serv_addr)), "ERROR connecting.");
 }
 
 Socket::~Socket() { close(sockfd_); }

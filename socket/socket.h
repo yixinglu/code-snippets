@@ -20,4 +20,6 @@ extern void error(const char *);
 
 } // namespace sock_test
 
+#define CHECK(fd, msg) do{ if ((fd) < 0) sock_test::error(msg); }while(0)
+
 #endif

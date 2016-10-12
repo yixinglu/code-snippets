@@ -11,8 +11,9 @@ int main() {
   char buf[buflen] = {0};
   snprintf(buf, buflen, "hello socket!\n");
   int ret = client.write(buf, strlen(buf));
-  if (ret < 0) sock_test::error("ERROR writing.");
+  CHECK(ret, "ERROR writing.");
   ret = client.read(buf, buflen);
+  CHECK(ret, "ERROR reading.");
   std::cout << buf << std::endl;
 
   return 0;

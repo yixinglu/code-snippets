@@ -12,12 +12,12 @@ int main() {
   const int buflen = 1024;
   char buf[buflen] = {0};
   int ret = client.read(buf, buflen);
-  if (ret < 0) sock_test::error("ERROR reading.");
+  CHECK(ret, "ERROR reading.");
   std::cout << buf << std::endl;
   bzero(buf, buflen);
   snprintf(buf, buflen, "got a msg\n");
   ret = client.write(buf, strlen(buf));
-  if (ret < 0) sock_test::error("ERROR writing.");
+  CHECK(ret, "ERROR writing.");
 
   return 0;
 }

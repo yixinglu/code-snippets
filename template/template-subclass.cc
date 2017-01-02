@@ -19,6 +19,10 @@ struct Base : Sub::_base_t {
     std::cout << "base" << std::endl;
     return {};
   }
+  // auto base2() -> decltype(Base<Sub>{}) {
+  //   std::cout << "base2" << std::endl;
+  //   return {};
+  // }
 };
 
 struct Sub {
@@ -34,7 +38,11 @@ struct Sub {
 int main() {
   // test1::Sub().sub();
   test2::Base<test2::Sub> sub2;
-  sub2.sub().base();
+  sub2
+    .sub()
+    .base()
+    // .base2()
+    ;
 
   return 0;
 }

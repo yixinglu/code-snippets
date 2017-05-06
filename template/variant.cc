@@ -56,20 +56,20 @@ int main() {
   e2_t e2{10};
 
   event_t<e1_t, e2_t> e;
-  e.type = 0;
+  e.type = EVENT_TYPE_E1;
   e.value = e1;
   dump_event(e);
 
-  e.type = 1;
+  e.type = EVENT_TYPE_E2;
   e.value = e2;
   dump_event(e);
 
   cevt_t ce;
-  ce.type = 0;
+  ce.type = EVENT_TYPE_E1;
   ce.value = &e1;
   dump_cevt(ce);
 
-  ce.type = 1;
+  ce.type = EVENT_TYPE_E2;
   ce.value = &e2;
   dump_cevt(ce);
 }

@@ -30,10 +30,26 @@ void dump_event(const event_t<e1_t, e2_t> &e) {
   }
 }
 
+struct cevt_t {
+  event_type type;
+  void *value;
+};
+
+void dump_cevt(const cevt_t &e) {
+  if (e.type == EVENT_TYPE_E1) {
+    auto e1 = static_cast<const e1_t *>(e.value);
+    std::cout << e1->a << std::endl;
+  } else if (e.type == EVENT_TYPE_E2) {
+    auto e2 = static_cast<const e2_t *>(e.value);
+    std::cout << e2->b << std::endl;
+  } else {
+    std::cout << "wrong" << std::endl;
+  }
+}
+
 }
 
 using namespace my;
-using namespace std;
 
 int main() {
   e1_t e1{0};
@@ -42,10 +58,18 @@ int main() {
   event_t<e1_t, e2_t> e;
   e.type = 0;
   e.value = e1;
-
   dump_event(e);
 
   e.type = 1;
   e.value = e2;
   dump_event(e);
+
+  cevt_t ce;
+  ce.type = 0;
+  ce.value = &e1;
+  dump_cevt(ce);
+
+  ce.type = 1;
+  ce.value = &e2;
+  dump_cevt(ce);
 }

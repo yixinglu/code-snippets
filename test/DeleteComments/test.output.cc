@@ -23,6 +23,12 @@ int main(int argc, char** argv) {
 
 
   std::cout << "\"" << "\\\"";
+  std::cout << "#include <iostream>\n"
+      "using namespace std;\n"
+      "int main(int argc, char**argv) {\n"
+      "\tcout << \"hello world\n\";// first program\n"
+      "\treturn 0;"
+      "}";
   int a = 1;
   const int* p = &a;
   int b = 2 / *p;

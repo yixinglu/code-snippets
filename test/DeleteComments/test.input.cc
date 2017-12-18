@@ -16,11 +16,13 @@ int main(int argc, char** argv) {
   printf("\'%d", 2);
   std::cout << "\\" << "\"" << '/' << "//" << "/**/" << std::endl; // comment
   std::cout << "'" << '"';
+  std::cout << '\n' << "/*" << "***/";
 
   /**
    * computation / * a pointer * /
    * computation /"//" * a pointer * /
    */
+  std::cout << "\"";
   int a = 1;
   const int* p = &a;
   int b = 2 / *p;

@@ -1,3 +1,14 @@
+// clang-format off
+//                    State Machine of Comment Deleter
+//
+//        +---------------+ +--------- CommentMultilineHold <----------+
+//        |      '"'      | |   '/'             otherwise|       '*'   |
+//        V               | V                            |             |
+// StringInside -------> Code -------> CommentStart -----+--> CommentMultilineStart
+//                '"'     ^     '/'          |  \'/'   '*'
+//                        |       otherwise  |   +----------> CommentLine
+//                        +------------------+---------------------|'\n'
+// clang-format on
 
 #include <fstream>
 #include <iostream>
@@ -6,52 +17,85 @@
 using std::ifstream;
 using std::string;
 
-enum class kState {
-  Code = 0,
-  CommentLine,
-  CommentMultiline,
-  Count = 3
+enum class State {
+  kCode = 0,
+  kCommentStart,
+  kCommentLine,
+  kCommentMultilineStart,
+  kCommentMultilineHold,
+  kStringInside,
+  kCount  // = 6
 };
 
-enum class kCharType {
-  SlashStar = 0,
-  StarSlash,
-  SlashSlash,
-  NewLine,
-  Count = 4
+enum class Event {
+  kSlash = 0,
+  kStar,
+  kNewLine,
+  kDoubleQuotes,
+  kOtherwise,
+  kCount  // = 5
 };
+
+enum class Status { kDrop, kPrint };
 
 struct StateMachine {
-  kState state;
-  bool drop_char;
+  State state;
+  Status status;
+  std::string ch;
 };
 
-StateMachine state_machine[(int)kState::Count][(int)kCharType::Count] = {
-  {
-    // Code
-    {kState::CommentMultiline, true}, // SlashStar
-    {kState::Code, false},            // StarSlash
-    {kState::CommentLine, true},      // SlashSlash
-    {kState::Code, false}             // NewLine
-  },
-  {
-    // CommentLine
-    {kState::CommentLine, true},      // SlashStar
-    {kState::CommentLine, true},      // StarSlash
-    {kState::CommentLine, true},      // SlashSlash
-    {kState::Code, false}             // NewLine
-  },
-  {
-    // CommentMultiline
-    {kState::CommentMultiline, true}, // SlashStar
-    {kState::Code, false},            // StarSlash
-    {kState::CommentMultiline, true}, // SlashSlash
-    {kState::CommentMultiline, true}  // NewLine
-  }
-};
+StateMachine state_machine[(int)State::kCount][(int)Event::kCount] = {
+    {
+        // kCode
+        {State::kCommentStart, Status::kDrop, ""},   // kSlash
+        {State::kCode, Status::kPrint, ""},          // kStar
+        {State::kCode, Status::kPrint, ""},          // kNewLine
+        {State::kCommentStart, Status::kPrint, ""},  // kDoubleQuotes
+        {State::kCode, Status::kPrint, ""}           // kOtherwise
+    },
+    {
+        // kCommentStart
+        {State::kCommentLine, Status::kDrop, ""},            // kSlash
+        {State::kCommentMultilineStart, Status::kDrop, ""},  // kStar
+        {State::kCode, Status::kPrint, "/"},                 // kNewLine
+        {State::kCode, Status::kPrint, "/"},                 // kDoubleQuotes
+        {State::kCode, Status::kPrint, "/"}                  // kOtherwise
+    },
+    {
+        // kCommentLine
+        {State::kCommentLine, Status::kDrop, ""},  // kSlash
+        {State::kCommentLine, Status::kDrop, ""},  // kStar
+        {State::kCode, Status::kDrop, ""},         // kNewLine
+        {State::kCommentLine, Status::kDrop, ""},  // kDoubleQuotes
+        {State::kCommentLine, Status::kDrop, ""}   // kOtherwise
+    },
+    {
+        // kCommentMultilineStart
+        {State::kCommentMultilineStart, Status::kDrop, ""},  // kSlash
+        {State::kCommentMultilineHold, Status::kDrop, ""},   // kStar
+        {State::kCommentMultilineStart, Status::kDrop, ""},  // kNewLine
+        {State::kCommentMultilineStart, Status::kDrop, ""},  // kDoubleQuotes
+        {State::kCommentMultilineStart, Status::kDrop, ""}   // kOtherwise
+    },
+    {
+        // kCommentMultilineHold
+        {State::kCode, Status::kDrop, ""},                  // kSlash
+        {State::kCommentMultilineHold, Status::kDrop, ""},  // kStar
+        {State::kCommentMultilineHold, Status::kDrop, ""},  // kNewLine
+        {State::kCommentMultilineHold, Status::kDrop, ""},  // kDoubleQuotes
+        {State::kCommentMultilineHold, Status::kDrop, ""}   // kOtherwise
+    },
+    {
+        // kStringInside
+        {State::kStringInside, Status::kPrint, ""},  // kSlash
+        {State::kStringInside, Status::kPrint, ""},  // kStar
+        {State::kStringInside, Status::kPrint, ""},  // kNewLine
+        {State::kCode, Status::kPrint, ""},          // kDoubleQuotes
+        {State::kStringInside, Status::kPrint, ""}   // kOtherwise
+    }};
 
 class FileReader {
-public:
+ public:
   FileReader(const char* filename) : ifs_(filename) {
     if (!ifs_.is_open()) {
       std::cerr << filename << " does not open!" << std::endl;
@@ -59,45 +103,39 @@ public:
   }
 
   char next_char() { return current_char_ = ifs_.get(); }
-  bool good() { return ifs_.good(); }
   char current_char() const { return current_char_; }
-  kCharType get_char_type() {
-    switch(current_char_) {
+  bool good() { return ifs_.good(); }
+  Event make_event() {
+    switch (next_char()) {
       case '/':
-        switch(next_char()) {
-          case '/': return kCharType::SlashSlash;
-          case '*': return kCharType::SlashStar;
-          default: break;
-        }
-        break;
+        return Event::kSlash;
       case '*':
-        if (next_char() == '/') return kCharType::StarSlash;
-        break;
+        return Event::kStar;
       case '\n':
-        return kCharType::NewLine;
-      default: break;
+        return Event::kNewLine;
+      case '"':
+        return Event::kDoubleQuotes;
+      default:
+        return Event::kOtherwise;
     }
-    return kCharType::Count;
   }
 
-
-private:
+ private:
   ifstream ifs_;
   char current_char_;
 };
 
-
 int main() {
+  State state = State::kCode;
 
-  kState state;
-
-  FileReader freader("uuu.txt.cc");
-  while(freader.good()) {
-    int char_type = (int)freader.get_char_type();
-    if (!state_machine[(int)state][char_type].drop_char) {
-      std::cout << freader.current_char();
+  FileReader freader("../uuu.txt.cc");
+  while (freader.good()) {
+    int event = (int)freader.make_event();
+    auto machine = state_machine[(int)state][event];
+    if (machine.status == Status::kPrint) {
+      std::cout << machine.ch << freader.current_char();
     }
-    state = state_machine[(int)state][char_type].state;
+    state = machine.state;
   }
 
   return 0;

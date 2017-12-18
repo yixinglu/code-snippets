@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
 
   /**
    * computation / * a pointer * /
+   * computation /"//" * a pointer * /
    */
   int a = 1;
   const int* p = &a;

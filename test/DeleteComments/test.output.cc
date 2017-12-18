@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
 
 
-  std::cout << "\"";
+  std::cout << "\"" << "\\\"";
   int a = 1;
   const int* p = &a;
   int b = 2 / *p;

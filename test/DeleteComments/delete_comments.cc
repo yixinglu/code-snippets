@@ -6,9 +6,17 @@
 //        |      '"'      | |   '/'             otherwise|       '*'   |
 //        V               | V                            |             |
 // StringInside -------> Code -------> CommentStart -----+--> CommentMultilineStart
-//                '"'     ^     '/'          |  \'/'   '*'
-//                        |       otherwise  |   +----------> CommentLine
-//                        +------------------+---------------------|'\n'
+//      | ^       '"'     /^    '/'          |  \     '*'
+//   '\'| |otherwise     / |                 |   +----------> CommentLine
+//      V |             /  |        otherwise|       '/'           |
+//  StringEscape       +   |                 |                     |'\n'
+//                  '''|   +-----------------+---------------------+
+//                     |   |
+//               '\'   V   |'''
+//   CharEscape <--- CharInside
+//      |                 ^
+//      |    otherwise    |
+//      +-----------------+
 // clang-format on
 
 #include <fstream>

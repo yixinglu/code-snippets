@@ -22,7 +22,7 @@ int main() {
     s.find(k);
   }
   cout << "set: " << (double)(clock()-t)/CLOCKS_PER_SEC << endl;
-  
+
   t = clock();
   for (int i = 0; i < 1000000; ++i) {
     auto k = rand();

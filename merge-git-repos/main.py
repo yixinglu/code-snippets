@@ -3,7 +3,7 @@ import time
 import sys
 
 
-# git filter-branch --force --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch *.tar.gz' --tag-name-filter cat -- --all
+# git filter-branch --force --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch *.tar.gz' branch-name
 
 # for i in range(len(commits)):
 #     for j in range(i+1, len(commits)):

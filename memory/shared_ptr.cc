@@ -15,7 +15,7 @@ class Bar {
  public:
   shared_ptr<Bar> get_shared_ptr() {
     cout << "Bar::get_shared_ptr()" << endl;
-    return shared_ptr<Bar>(this); // dangerous
+    return shared_ptr<Bar>(this);  // dangerous
   }
 };
 

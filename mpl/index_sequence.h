@@ -10,7 +10,9 @@ struct make_sequence_impl;
 
 template <std::size_t N, std::size_t... Ints>
 struct make_sequence_impl<index_sequence<Ints...>, N> {
-  using type = typename make_sequence_impl<index_sequence<Ints..., sizeof...(Ints)>, N-1>::type;
+  using type =
+      typename make_sequence_impl<index_sequence<Ints..., sizeof...(Ints)>,
+                                  N - 1>::type;
 };
 
 template <std::size_t... Ints>
@@ -21,4 +23,4 @@ struct make_sequence_impl<index_sequence<Ints...>, 0> {
 template <std::size_t N>
 using make_sequence_t = typename make_sequence_impl<index_sequence<>, N>::type;
 
-}
+}  // namespace mpl

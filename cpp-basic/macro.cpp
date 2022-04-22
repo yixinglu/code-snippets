@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define FIND(struc, e) (size_t)&(((struc*)0)->e)
+#define FIND(struc, e) (size_t) & (((struc*)0)->e)
 
 struct student {
   int a;
@@ -11,13 +11,13 @@ struct student {
 };
 
 void t1() {
- printf("0x%08x\n", FIND(student, a)); 
- printf("0x%08x\n", FIND(student, b)); 
- printf("0x%08x\n", FIND(student, ccc)); 
- printf("%d\n", FIND(student, ccc)-FIND(student, b));
+  printf("0x%08x\n", FIND(student, a));
+  printf("0x%08x\n", FIND(student, b));
+  printf("0x%08x\n", FIND(student, ccc));
+  printf("%d\n", FIND(student, ccc) - FIND(student, b));
 }
 
-#define SECONDS_PER_YEAR (60*60*24*365)/*UL*/
+#define SECONDS_PER_YEAR (60 * 60 * 24 * 365) /*UL*/
 #define literal_num 0UL
 
 void t2() {
@@ -25,14 +25,11 @@ void t2() {
   const uint32_t ui = literal_num;
 }
 
-#define MIN(A,B) ((A) <= (B) ? (A) : (B))
+#define MIN(A, B) ((A) <= (B) ? (A) : (B))
 
-void t3() {
-  printf("%d\n", MIN(10, 65));
-}
+void t3() { printf("%d\n", MIN(10, 65)); }
 
-int main()
-{
+int main() {
   t1();
   t2();
   t3();

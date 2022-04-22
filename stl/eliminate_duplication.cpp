@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 using namespace std;
-using namespace std::tr1;
 
 struct Bar {
   int id;
@@ -25,11 +24,11 @@ void eliminate_duplication(vector<Bar>& bars) {
   for_each(tmp.begin(), tmp.end(), [&](const Bar& bar) {
     if (ids.insert(bar.id).second) {
       bars.push_back(bar);
-    } 
-  }); 
+    }
+  });
 }
 
-void init_vector(vector<Bar>& bars, int sz) {
+void init_vector(vector<Bar>& bars, size_t sz) {
   bars.resize(sz);
   for (size_t i = 0; i < sz; ++i) {
     bars[i].id = rand() % 100;
@@ -46,7 +45,7 @@ void print_bar_vector(const vector<Bar>& bars) {
 
 int main(int argc, char* argv[]) {
   if (argc != 2) return 1;
-  
+
   stringstream ss(argv[1]);
   int sz = 0;
   ss >> sz;

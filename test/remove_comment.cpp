@@ -1,10 +1,11 @@
 #include <fcntl.h>
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define BUFSIZE (1024 * 100) /*UL*/
+
 // this solution is not completely right
 void remove_comment(char *buf, size_t size) {
   char *p, *end, c;

@@ -1,14 +1,12 @@
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 using namespace std;
 
-void print(const char* str) {
-  cout << str << endl;
-}
+void print(const char* str) { cout << str << endl; }
 
 int main() {
-  auto printHello = []() { print("hello");};
+  auto printHello = []() { print("hello"); };
   function<void()> printHello1 = bind(&print, "hello");
   printHello();
   printHello1();

@@ -1,11 +1,10 @@
-#include <iostream>
 #include <complex>
+#include <iostream>
 
 typedef std::complex<double> complex;
 
-void print(complex* p, complex const* pc,
-           complex* const cp, complex const* const cpc)
-{
+void print(complex* p, complex const* pc, complex* const cp,
+           complex const* const cpc) {
   *p = 0;
   ++p;
 
@@ -28,7 +27,7 @@ int main(int argc, char* argv[]) {
 
   complex* const cp = pc;
   // cp = pcc;
-  complex const * const cpc = pc;
+  complex const* const cpc = pc;
 
   return 0;
 }

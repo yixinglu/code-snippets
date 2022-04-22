@@ -7,18 +7,15 @@ struct Interface {
 };
 
 class Base : protected Interface {
-public:
-  virtual void print() const {
-    std::cout << "Base" << std::endl;
-  }
+ public:
+  virtual void print() const { std::cout << "Base" << std::endl; }
 };
 
 class Drive : private Base {
   friend void test();
-public:
-  virtual void print() const {
-    std::cout << "Drive" << std::endl;
-  }
+
+ public:
+  virtual void print() const { std::cout << "Drive" << std::endl; }
 };
 
 void test() {

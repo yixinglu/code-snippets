@@ -3,15 +3,13 @@
 using namespace std;
 
 struct Foo {
-  Foo &operator +(int i) {
+  Foo &operator+(int i) {
     cout << "operator +" << endl;
     return *this;
   }
 };
 
-Foo &operator +(int i, Foo &foo) {
-  return foo + i;
-}
+Foo &operator+(int i, Foo &foo) { return foo + i; }
 
 int main() {
   Foo foo;

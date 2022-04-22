@@ -1,6 +1,7 @@
+#include <stdint.h>
+
 #include <iostream>
 #include <variant>
-#include <stdint.h>
 
 namespace my {
 
@@ -12,13 +13,14 @@ struct event_t {
   std::variant<Types...> value;
 };
 
-struct e1_t { int a; };
-struct e2_t { int b; };
-
-enum {
-  EVENT_TYPE_E1 = 0,
-  EVENT_TYPE_E2 = 1
+struct e1_t {
+  int a;
 };
+struct e2_t {
+  int b;
+};
+
+enum { EVENT_TYPE_E1 = 0, EVENT_TYPE_E2 = 1 };
 
 void dump_event(const event_t<e1_t, e2_t> &e) {
   if (e.type == EVENT_TYPE_E1) {
@@ -47,7 +49,7 @@ void dump_cevt(const cevt_t &e) {
   }
 }
 
-}
+}  // namespace my
 
 using namespace my;
 

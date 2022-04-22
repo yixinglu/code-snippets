@@ -1,20 +1,18 @@
 #include <iostream>
 
-template<typename T>
+template <typename T>
 void print(const T&) {
-// == void print(T const &) {
+  // == void print(T const &) {
   std::cout << "template" << std::endl;
 }
 
-template<>
-void print<char*>(char *const &) {
-// != void print<char*>(const char*&) {
+template <>
+void print<char*>(char* const&) {
+  // != void print<char*>(const char*&) {
   std::cout << "specialization" << std::endl;
 }
 
-void print(const char*) {
-  std::cout << "not template" << std::endl;
-}
+void print(const char*) { std::cout << "not template" << std::endl; }
 
 int main(int argc, char* argv[]) {
   const char* p = "hello";

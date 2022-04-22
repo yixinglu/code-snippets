@@ -3,19 +3,18 @@
 
 using namespace std;
 
-template <bool ...b>
+template <bool... b>
 struct logic_helper;
 
-template <bool ...b>
+template <bool... b>
 using all_t = std::is_same<logic_helper<b...>, logic_helper<(b or true)...>>;
 
-template <bool ...b>
+template <bool... b>
 auto test() -> all_t<b...> {
   return {};
 }
 
-struct select_name_t {
-};
+struct select_name_t {};
 
 struct impl_t {
   impl_t() = default;
@@ -24,8 +23,8 @@ struct impl_t {
 };
 
 struct base_t {
-  template <typename ...Args>
-  base_t(Args&& ...args) : statement_name{} {}
+  template <typename... Args>
+  base_t(Args&&... args) : statement_name{} {}
   // base_t(Args&& ...args) : statement_name{std::forward<Args>(args)...} {}
   impl_t statement_name;
 };
@@ -64,12 +63,17 @@ int main() {
 
   base_t base(true, 10);
 
-  cout << "meta_quote<meta_always> type:" 
-       << std::is_same<meta_quote<meta_always>::apply<int>::apply<double, float>, int>::value << endl;
-  // meta_quote<meta_always>::apply<int, double>::apply<double, float> t; // error
+  cout
+      << "meta_quote<meta_always> type:"
+      << std::is_same<meta_quote<meta_always>::apply<int>::apply<double, float>,
+                      int>::value
+      << endl;
+  // meta_quote<meta_always>::apply<int, double>::apply<double, float> t; //
+  // error
 
   cout << "transform value:" << transform<typelist<int, double>>::value << endl;
-  // cout << "transform value:" << transform<int, double>::value << endl; // error
+  // cout << "transform value:" << transform<int, double>::value << endl; //
+  // error
 
   return 0;
 }

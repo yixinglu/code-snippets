@@ -1,14 +1,14 @@
 
+#include "socket.h"
+
+#include <netdb.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-
-#include "socket.h"
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace sock_test {
 
@@ -47,19 +47,22 @@ int Socket::read(char *buf, int len) {
   return ::read(sockfd_, buf, len);
 }
 
-Socket &operator >> (Socket &sock, std::string &str) {
+Socket &operator>>(Socket &sock, std::string &str) {
   const int buf_len = 1024;
   char buf[buf_len];
   bzero(buf, buf_len);
   int err = sock.read(buf, buf_len);
-  str.set(buf);
+  if (err) {
+    printf("error: %d", err);
+  }
+  str.append(buf);
   return sock;
 }
 
-Socket &operator << (Socket &sock, const char *str) {
-  std::stringstream sstr(str);
-  sock.write(sstr.buf(), sstr.size());
-  return sock;
-}
+// Socket &operator<<(Socket &sock, const char *str) {
+//   std::stringstream sstr(str);
+//   sock.write(sstr.buf(), sstr.size());
+//   return sock;
+// }
 
 }  // namespace sock_test

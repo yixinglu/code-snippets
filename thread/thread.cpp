@@ -4,7 +4,7 @@
 using namespace std;
 
 void task(int x) {
-  for (int i = x; i < x+100; ++i) {
+  for (int i = x; i < x + 100; ++i) {
     cout << i << endl;
   }
 }

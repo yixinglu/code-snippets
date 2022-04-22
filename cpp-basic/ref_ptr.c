@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void GetMemory(char **p, int num) {
-  *p = (char*)malloc(sizeof(char)*num);
-}
+void GetMemory(char** p, int num) { *p = (char*)malloc(sizeof(char) * num); }
 
 char* GetMemory1(char* p, int num) {
-  return p = (char*)malloc(sizeof(char)*num);
+  return p = (char*)malloc(sizeof(char) * num);
 }
 
 const char* str() {

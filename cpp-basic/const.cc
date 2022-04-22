@@ -1,19 +1,19 @@
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 
 class C {
-public:
+ public:
   C(int i) : m_Count(i) {}
   int incr() const { return ++m_Count; }
   int decr() const { return --m_Count; }
-private:
+
+ private:
   mutable int m_Count;
 };
 
-int main()
-{
+int main() {
   C c1(0), c2(10);
   for (int i = 0; i < 10; i++) {
     int tmp = c1.incr();

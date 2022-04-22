@@ -9,8 +9,23 @@ add_executable(
 )
 
 add_executable(
+  const2
+  const.cc
+)
+
+add_executable(
+  copy
+  copy.cpp
+)
+
+add_executable(
   delegate-class
   delegate-class.cc
+)
+
+add_executable(
+  ex1
+  ex1.cpp
 )
 
 add_executable(
@@ -26,6 +41,26 @@ add_executable(
 add_executable(
   logic_words
   logic_words.cc
+)
+
+add_executable(
+  macro
+  macro.cpp
+)
+
+add_executable(
+  ref_ptr
+  ref_ptr.c
+)
+
+add_executable(
+  ref_ptr2
+  ref_ptr2.cpp
+)
+
+add_executable(
+  sizeof
+  sizeof.cpp
 )
 
 add_executable(

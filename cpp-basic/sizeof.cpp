@@ -1,6 +1,7 @@
-#include <iostream>
 #include <stdio.h>
 #include <string.h>
+
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -16,9 +17,7 @@ struct {
   short b;
 } B;
 
-void t1() {
-  cout << sizeof A << " " << sizeof B  << endl;
-}
+void t1() { cout << sizeof A << " " << sizeof B << endl; }
 
 void t2() {
   int a;
@@ -36,25 +35,23 @@ struct {
 } struc;
 #pragma pack()
 
-void t3() {
-  cout << sizeof struc << endl;
-}
+void t3() { cout << sizeof struc << endl; }
 
 void t4() {
   string strArr1[] = {"Trend", "Micro", "soft"};
   string* pStrArr = new string[2];
   pStrArr[0] = "US";
   pStrArr[1] = "CN";
-  for(int i=0; i < sizeof(strArr1)/sizeof(string); i++) {
+  for (int i = 0; i < sizeof(strArr1) / sizeof(string); i++) {
     cout << strArr1[i];
   }
-  for (int j=0; j < sizeof(*pStrArr)*2/sizeof(string); j++) {
+  for (int j = 0; j < sizeof(*pStrArr) * 2 / sizeof(string); j++) {
     cout << pStrArr[j];
   }
   cout << endl << sizeof(string) << endl;
 }
 
-int f() {return 0;}
+int f() { return 0; }
 
 void t5() {
   cout << boolalpha << (sizeof(unsigned int) == sizeof(int)) << endl;
@@ -64,28 +61,22 @@ void t5() {
 }
 
 class Base {
-public:
-  virtual ~Base() {};
+ public:
+  virtual ~Base(){};
   virtual void foo() = 0;
 };
 
 class Drived : public Base {
-public:
+ public:
   virtual void foo() {}
 };
 
-void t6() {
-  cout << sizeof(Base) << " " << sizeof(Drived) << endl;
-}
+void t6() { cout << sizeof(Base) << " " << sizeof(Drived) << endl; }
 
 char var[10];
-int t7_(char var[]) {
-  return sizeof(var);
-}
+int t7_(char var[]) { return sizeof(var); }
 
-void t7() {
-  cout << t7_(var) << endl;
-}
+void t7() { cout << t7_(var) << endl; }
 
 class AA {};
 class AA2 {};
@@ -94,10 +85,9 @@ class CC : public virtual BB {};
 class DD : public AA, public AA2 {};
 
 void t8() {
-  cout << sizeof (AA) << " " << sizeof(BB) << " "
-       << sizeof (CC)  << " " << sizeof(DD) << endl;
+  cout << sizeof(AA) << " " << sizeof(BB) << " " << sizeof(CC) << " "
+       << sizeof(DD) << endl;
 }
-
 
 int main() {
   t1();
